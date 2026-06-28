@@ -1268,6 +1268,33 @@ h1 {
   padding: 1rem;
 }
 
+/* During active gameplay on landscape/short screens — compact to leave room for keyboard */
+@media (orientation: landscape) and (max-height: 600px) {
+  #invaders-page.playing #invaders-canvas {
+    max-height: 30vh;
+  }
+
+  #invaders-page.playing .invaders-hud {
+    padding: 0.2rem 0;
+    font-size: 0.85rem;
+  }
+
+  #invaders-page.playing .gun-word {
+    margin-bottom: 0.3rem;
+  }
+
+  #invaders-page.playing .gun-letter {
+    width: 1.5rem;
+    height: 1.8rem;
+    font-size: 1.1rem;
+  }
+
+  #invaders-page.playing h1,
+  #invaders-page.playing .subtitle {
+    display: none;
+  }
+}
+
 .invaders-gun-area {
   background: #1a1a3e;
   border-radius: 0 0 8px 8px;

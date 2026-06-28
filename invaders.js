@@ -31,6 +31,11 @@ let invBullet = null; // { x, y }
 let invWordsUsed = [];
 let invCorrectCount = 0;
 let invWrongCount = 0;
+let invLevel = 1;          // current difficulty level
+let invWordsCleared = 0;   // words cleared since last level-up
+let invMissingRatio = 0.4; // base ratio of letters to hide
+let invNotification = '';   // in-game notification text
+let invNotificationTimer = 0;
 
 // DOM
 const invNoWords = document.getElementById('invaders-no-words');
@@ -106,10 +111,16 @@ function startInvadersGame() {
   invWordsUsed = [];
   invCorrectCount = 0;
   invWrongCount = 0;
+  invLevel = 1;
+  invWordsCleared = 0;
+  invMissingRatio = 0.4;
+  invNotification = '';
+  invNotificationTimer = 0;
 
   invSetup.classList.add('hidden');
   invGame.classList.remove('hidden');
   invGameover.classList.add('hidden');
+  document.getElementById('invaders-page').classList.add('playing');
 
   resizeCanvas();
   createAliens();
@@ -158,9 +169,9 @@ function loadNewWord() {
   const word = invWords[Math.floor(Math.random() * invWords.length)];
   invCurrentWord = word;
 
-  // Remove some letters (30-60% of them)
+  // Remove letters based on current difficulty ratio
   const letterCount = word.length;
-  const removeCount = Math.max(1, Math.floor(letterCount * 0.4 + Math.random() * 0.2 * letterCount));
+  const removeCount = Math.max(1, Math.min(letterCount - 1, Math.round(letterCount * invMissingRatio)));
 
   // Pick random indices to hide
   const indices = [];
@@ -213,10 +224,15 @@ function checkAnswer() {
     // Correct! Fire bullet
     invCorrectCount++;
     invScore += 10;
+    invWordsCleared++;
     fireBullet();
     invInput.value = '';
     renderGunWord();
     invWordsUsed.push({ word: invCurrentWord, correct: true });
+
+    // Check for level-up every 5 words cleared
+    checkLevelUp();
+
     // Load next word after short delay
     setTimeout(() => {
       if (invGameActive) {
@@ -379,11 +395,52 @@ function draw() {
   invCtx.font = '28px monospace';
   invCtx.textAlign = 'center';
   invCtx.fillText('🚀', invCanvas.width / 2, invCanvas.height - 15);
+
+  // Draw notification
+  if (invNotificationTimer > 0) {
+    invNotificationTimer--;
+    const alpha = Math.min(1, invNotificationTimer / 30); // fade out in last 30 frames
+    invCtx.save();
+    invCtx.globalAlpha = alpha;
+    invCtx.font = 'bold 22px sans-serif';
+    invCtx.textAlign = 'center';
+    invCtx.fillStyle = '#ffcc00';
+    invCtx.strokeStyle = '#000';
+    invCtx.lineWidth = 3;
+    const textY = invCanvas.height * 0.45;
+    invCtx.strokeText(invNotification, invCanvas.width / 2, textY);
+    invCtx.fillText(invNotification, invCanvas.width / 2, textY);
+    invCtx.restore();
+  }
 }
 
 function updateHUD() {
   invScoreEl.textContent = invScore;
   invLivesEl.textContent = '❤️'.repeat(Math.max(0, invLives));
+}
+
+function checkLevelUp() {
+  // Level up every 5 words cleared
+  if (invWordsCleared > 0 && invWordsCleared % 5 === 0) {
+    invLevel++;
+    const diff = INV_DIFFICULTY[invDifficulty];
+
+    // Alternate between speed increase and more missing letters
+    if (invLevel % 2 === 0) {
+      // Increase speed
+      invSpeed *= 1.25;
+      showNotification('⚡ SPEED UP!');
+    } else {
+      // Increase missing letters (cap at 90%)
+      invMissingRatio = Math.min(0.9, invMissingRatio + 0.1);
+      showNotification('🔤 MORE LETTERS!');
+    }
+  }
+}
+
+function showNotification(text) {
+  invNotification = text;
+  invNotificationTimer = 120; // frames (~2 seconds)
 }
 
 function endInvadersGame(won) {
@@ -392,6 +449,7 @@ function endInvadersGame(won) {
 
   invGame.classList.add('hidden');
   invGameover.classList.remove('hidden');
+  document.getElementById('invaders-page').classList.remove('playing');
 
   if (won) {
     invResultTitle.textContent = '🏆 You cleared all the aliens!';
