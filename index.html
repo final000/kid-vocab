@@ -19,8 +19,9 @@
   <div id="app">
     <!-- Top Navigation -->
     <nav id="main-nav" class="main-nav no-print">
-      <button class="nav-tab active" data-target="input-page">📝 Practice Sheet</button>
-      <button class="nav-tab" data-target="hangman-page">🎮 Hangman Game</button>
+      <button class="nav-tab active" data-target="input-page">📝 Sheet</button>
+      <button class="nav-tab" data-target="hangman-page">🎮 Hangman</button>
+      <button class="nav-tab" data-target="spelling-page">🧱 Spelling Wall</button>
     </nav>
 
     <!-- Input Page -->
@@ -145,11 +146,90 @@
         </div>
       </div>
     </section>
+
+    <!-- Spelling Wall Game Page -->
+    <section id="spelling-page" class="page hidden">
+      <h1>🧱 Spelling Wall</h1>
+      <p class="subtitle">Spell each word correctly to break through the walls!</p>
+
+      <div id="spelling-no-words" class="hangman-message hidden">
+        <p>⚠️ No words in history yet. Add some words in the <strong>Sheet</strong> tab first!</p>
+      </div>
+
+      <!-- Setup Screen -->
+      <div id="spelling-setup" class="hidden">
+        <div class="spelling-setup-section">
+          <label class="setup-label">How many walls?</label>
+          <select id="spelling-wall-count" class="setup-select">
+            <option value="3">3</option>
+            <option value="5" selected>5</option>
+            <option value="7">7</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+
+        <div class="spelling-setup-section">
+          <label class="setup-label">Select words for the walls:</label>
+          <p class="picker-hint">Click words to select/deselect. Walls will use these in order.</p>
+          <ul id="spelling-word-picker" class="pick-list"></ul>
+        </div>
+
+        <button id="spelling-start-btn" class="btn btn-success">Start Game</button>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="spelling-game" class="hidden">
+        <div class="spelling-progress">
+          <span>Wall <strong id="spelling-current-wall">1</strong> of <strong id="spelling-total-walls">5</strong></span>
+          <span>Attempts: <strong id="spelling-attempts">0</strong></span>
+        </div>
+
+        <div class="spelling-scene" id="spelling-scene">
+          <div class="scene-ground"></div>
+          <div class="scene-runner" id="spelling-runner">
+            <div class="mario-char">
+              <div class="mario-body"></div>
+            </div>
+          </div>
+          <div class="scene-walls" id="spelling-walls"></div>
+        </div>
+        <div class="scene-hint" id="spelling-hint"></div>
+
+        <div class="spelling-input-area">
+          <input
+            type="text"
+            id="spelling-input"
+            placeholder="Type the word..."
+            autocomplete="off"
+            autocapitalize="none"
+          />
+          <button id="spelling-submit-btn" class="btn btn-primary">Check</button>
+          <button id="spelling-hint-btn" class="btn btn-hint">💡</button>
+        </div>
+
+        <div id="spelling-feedback" class="spelling-feedback hidden"></div>
+        <div id="spelling-hint-display" class="hint-display hidden"></div>
+      </div>
+
+      <!-- Result Screen -->
+      <div id="spelling-result" class="hidden">
+        <div class="spelling-result-card">
+          <h2 id="spelling-result-title"></h2>
+          <div class="spelling-final-stats">
+            <span class="stat-correct">✅ Correct: <strong id="spelling-stat-correct">0</strong></span>
+            <span class="stat-wrong">❌ Wrong: <strong id="spelling-stat-wrong">0</strong></span>
+          </div>
+          <div class="spelling-result-details" id="spelling-result-details"></div>
+          <button id="spelling-play-again-btn" class="btn btn-primary">Play Again</button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script src="words.js"></script>
   <script src="app.js"></script>
   <script src="hangman.js"></script>
+  <script src="spelling-wall.js"></script>
   <script>
     // Unregister any previously installed service worker
     if ('serviceWorker' in navigator) {

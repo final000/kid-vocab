@@ -81,6 +81,7 @@ const pages = {
   'input-page': inputPage,
   'print-page': printPage,
   'hangman-page': document.getElementById('hangman-page'),
+  'spelling-page': document.getElementById('spelling-page'),
 };
 
 function switchTab(targetId) {
@@ -95,6 +96,10 @@ function switchTab(targetId) {
 
   if (targetId === 'hangman-page' && typeof window.onHangmanTabOpen === 'function') {
     window.onHangmanTabOpen();
+  }
+
+  if (targetId === 'spelling-page' && typeof window.onSpellingTabOpen === 'function') {
+    window.onSpellingTabOpen();
   }
 }
 

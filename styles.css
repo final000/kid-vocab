@@ -678,3 +678,557 @@ h1 {
     flex-wrap: wrap;
   }
 }
+
+/* === Spelling Wall Game === */
+.spelling-setup-section {
+  margin-bottom: 1.2rem;
+}
+
+.setup-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.setup-select {
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Progress bar */
+.spelling-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+
+/* === Animated Scene - Mario Style === */
+.spelling-scene {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: #6b88c2;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  border: 3px solid #333;
+}
+
+/* Clouds */
+.spelling-scene::before {
+  content: '☁️';
+  position: absolute;
+  top: 10px;
+  left: 8%;
+  font-size: 2rem;
+  animation: cloudFloat 18s linear infinite;
+}
+
+.spelling-scene::after {
+  content: '☁️';
+  position: absolute;
+  top: 20px;
+  left: 60%;
+  font-size: 1.5rem;
+  animation: cloudFloat 24s linear infinite;
+  animation-delay: -8s;
+}
+
+@keyframes cloudFloat {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+  100% { transform: translateX(0); }
+}
+
+/* Ground - Mario brick pattern */
+.scene-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #c84c0c 0px, #c84c0c 22px,
+      #2c1a00 22px, #2c1a00 24px
+    );
+  border-top: 3px solid #2c1a00;
+}
+
+.scene-ground::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    #2c1a00 0px, #2c1a00 10px,
+    transparent 10px, transparent 12px
+  );
+}
+
+.scene-ground::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 2%;
+  width: 35px;
+  height: 24px;
+  background: #3aa03a;
+  border-radius: 50% 50% 0 0;
+  border: 2px solid #2a702a;
+  border-bottom: none;
+}
+
+/* Runner character - CSS Pixel Mario */
+.scene-runner {
+  position: absolute;
+  bottom: 44px;
+  z-index: 10;
+  transition: left 0.4s ease;
+}
+
+.mario-char {
+  width: 48px;
+  height: 64px;
+  position: relative;
+}
+
+/* Mario built with box-shadows on a single pixel element */
+.mario-body {
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  box-shadow:
+    /* ---- Hat (red) ---- */
+    12px 0 0 #e00000, 16px 0 0 #e00000, 20px 0 0 #e00000, 24px 0 0 #e00000, 28px 0 0 #e00000,
+    8px 4px 0 #e00000, 12px 4px 0 #e00000, 16px 4px 0 #e00000, 20px 4px 0 #e00000, 24px 4px 0 #e00000, 28px 4px 0 #e00000, 32px 4px 0 #e00000, 36px 4px 0 #e00000,
+    /* ---- Hair/Face ---- */
+    8px 8px 0 #6a3400, 12px 8px 0 #6a3400, 16px 8px 0 #6a3400, 20px 8px 0 #ffb880, 24px 8px 0 #ffb880, 28px 8px 0 #000000, 32px 8px 0 #ffb880,
+    4px 12px 0 #6a3400, 8px 12px 0 #ffb880, 12px 12px 0 #6a3400, 16px 12px 0 #ffb880, 20px 12px 0 #ffb880, 24px 12px 0 #ffb880, 28px 12px 0 #000000, 32px 12px 0 #ffb880, 36px 12px 0 #ffb880, 40px 12px 0 #ffb880,
+    4px 16px 0 #6a3400, 8px 16px 0 #ffb880, 12px 16px 0 #6a3400, 16px 16px 0 #6a3400, 20px 16px 0 #ffb880, 24px 16px 0 #ffb880, 28px 16px 0 #ffb880, 32px 16px 0 #000000, 36px 16px 0 #ffb880, 40px 16px 0 #ffb880, 44px 16px 0 #ffb880,
+    8px 20px 0 #ffb880, 12px 20px 0 #ffb880, 16px 20px 0 #ffb880, 20px 20px 0 #ffb880, 24px 20px 0 #ffb880, 28px 20px 0 #000000, 32px 20px 0 #000000, 36px 20px 0 #000000,
+    /* ---- Shirt (red) + Overalls (blue) ---- */
+    8px 24px 0 #0000c8, 12px 24px 0 #0000c8, 16px 24px 0 #e00000, 20px 24px 0 #0000c8, 24px 24px 0 #0000c8, 28px 24px 0 #0000c8,
+    4px 28px 0 #0000c8, 8px 28px 0 #0000c8, 12px 28px 0 #0000c8, 16px 28px 0 #e00000, 20px 28px 0 #0000c8, 24px 28px 0 #e00000, 28px 28px 0 #0000c8, 32px 28px 0 #0000c8, 36px 28px 0 #0000c8,
+    4px 32px 0 #0000c8, 8px 32px 0 #0000c8, 12px 32px 0 #e00000, 16px 32px 0 #e00000, 20px 32px 0 #ffcc00, 24px 32px 0 #e00000, 28px 32px 0 #e00000, 32px 32px 0 #0000c8, 36px 32px 0 #0000c8,
+    8px 36px 0 #e00000, 12px 36px 0 #e00000, 16px 36px 0 #e00000, 20px 36px 0 #e00000, 24px 36px 0 #e00000, 28px 36px 0 #e00000, 32px 36px 0 #e00000,
+    /* ---- Overalls bottom ---- */
+    8px 40px 0 #0000c8, 12px 40px 0 #0000c8, 16px 40px 0 #0000c8, 20px 40px 0 #0000c8, 24px 40px 0 #0000c8, 28px 40px 0 #0000c8, 32px 40px 0 #0000c8,
+    8px 44px 0 #0000c8, 12px 44px 0 #0000c8, 16px 44px 0 #0000c8, 24px 44px 0 #0000c8, 28px 44px 0 #0000c8, 32px 44px 0 #0000c8,
+    /* ---- Shoes (brown) ---- */
+    4px 48px 0 #804000, 8px 48px 0 #804000, 12px 48px 0 #804000, 24px 48px 0 #804000, 28px 48px 0 #804000, 32px 48px 0 #804000,
+    0px 52px 0 #804000, 4px 52px 0 #804000, 8px 52px 0 #804000, 12px 52px 0 #804000, 24px 52px 0 #804000, 28px 52px 0 #804000, 32px 52px 0 #804000, 36px 52px 0 #804000;
+  image-rendering: pixelated;
+}
+
+/* Running leg animation */
+.scene-runner.running .mario-body {
+  animation: marioRun 0.3s steps(2) infinite;
+}
+
+@keyframes marioRun {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Bounce animation on the whole runner */
+.scene-runner.running {
+  animation: runBob 0.3s ease-in-out infinite;
+}
+
+@keyframes runBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.scene-runner.hit-wall {
+  animation: marioBounce 0.5s ease forwards;
+}
+
+@keyframes marioBounce {
+  0% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(3px) translateY(-20px); }
+  50% { transform: translateX(-5px) translateY(-10px); }
+  100% { transform: translateX(-15px) translateY(0); }
+}
+
+/* Mario falls flat on the ground - backward */
+.scene-runner.fallen {
+  transform: translateX(-15px) rotate(-90deg);
+  transform-origin: bottom center;
+  transition: transform 0.3s ease;
+}
+
+/* Mario gets back up */
+.scene-runner.getting-up {
+  animation: getBackUp 0.5s ease forwards;
+}
+
+@keyframes getBackUp {
+  0% { transform: translateX(-15px) rotate(-90deg); }
+  40% { transform: translateX(-15px) rotate(-45deg); }
+  70% { transform: translateX(-15px) rotate(5deg); }
+  100% { transform: translateX(-15px) rotate(0deg); }
+}
+
+.scene-runner.celebrate {
+  animation: marioJump 0.5s ease;
+}
+
+@keyframes marioJump {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-30px); }
+  60% { transform: translateY(-28px); }
+}
+
+/* Jump over pipe arc */
+.scene-runner.jumping {
+  animation: marioJumpOver 0.8s ease forwards;
+}
+
+@keyframes marioJumpOver {
+  0% { transform: translateX(0) translateY(0); }
+  20% { transform: translateX(5px) translateY(-60px); }
+  50% { transform: translateX(30px) translateY(-70px); }
+  80% { transform: translateX(55px) translateY(-30px); }
+  100% { transform: translateX(60px) translateY(0); }
+}
+
+/* Walls container */
+.scene-walls {
+  position: absolute;
+  bottom: 44px;
+  left: 0;
+  right: 0;
+  height: 60%;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Flag at the end - past all pipes */
+.scene-walls::after {
+  content: '🚩';
+  position: absolute;
+  right: 1%;
+  bottom: 30px;
+  font-size: 2rem;
+  filter: drop-shadow(1px 1px 0 #000);
+}
+
+/* Pipe-style walls (green pipes!) */
+.scene-wall-item {
+  position: absolute;
+  width: 36px;
+  height: 58px;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.scene-wall-item .brick {
+  display: none;
+}
+
+/* Pipe body */
+.scene-wall-item::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  width: 28px;
+  height: 46px;
+  background: linear-gradient(90deg,
+    #0a5c0a 0%,
+    #1a8c1a 15%,
+    #2dcc2d 35%,
+    #5de65d 50%,
+    #2dcc2d 65%,
+    #1a8c1a 85%,
+    #0a5c0a 100%
+  );
+  border: 2px solid #063c06;
+  border-top: none;
+}
+
+/* Pipe rim */
+.scene-wall-item::after {
+  content: '';
+  position: absolute;
+  bottom: 44px;
+  left: 0;
+  width: 36px;
+  height: 14px;
+  background: linear-gradient(90deg,
+    #0a5c0a 0%,
+    #1a8c1a 15%,
+    #2dcc2d 35%,
+    #5de65d 50%,
+    #2dcc2d 65%,
+    #1a8c1a 85%,
+    #0a5c0a 100%
+  );
+  border: 2px solid #063c06;
+  border-radius: 3px 3px 0 0;
+}
+
+/* Active wall = question block style (orange/gold) */
+.scene-wall-item.wall-active::before {
+  background: linear-gradient(90deg,
+    #804000 0%,
+    #c87000 15%,
+    #e8a020 35%,
+    #ffc850 50%,
+    #e8a020 65%,
+    #c87000 85%,
+    #804000 100%
+  );
+  border-color: #4a2800;
+}
+
+.scene-wall-item.wall-active::after {
+  background: linear-gradient(90deg,
+    #804000 0%,
+    #c87000 15%,
+    #e8a020 35%,
+    #ffc850 50%,
+    #e8a020 65%,
+    #c87000 85%,
+    #804000 100%
+  );
+  border-color: #4a2800;
+}
+
+.scene-wall-item.wall-broken {
+  opacity: 0.25;
+}
+
+.scene-wall-item.wall-cleared {
+  opacity: 0.2;
+}
+
+.scene-wall-item.wall-shake {
+  animation: pipeShake 0.4s ease;
+}
+
+@keyframes pipeShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-5px) rotate(-2deg); }
+  30% { transform: translateX(5px) rotate(2deg); }
+  45% { transform: translateX(-4px) rotate(-1deg); }
+  60% { transform: translateX(4px) rotate(1deg); }
+  75% { transform: translateX(-2px); }
+}
+
+/* Hint below scene - retro game style */
+.scene-hint {
+  text-align: center;
+  padding: 0.6rem;
+  background: #1a1a1a;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 2px solid #444;
+}
+
+.hint-letters {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  color: #ffc850;
+}
+
+.hint-length {
+  font-size: 0.8rem;
+  color: #aaa;
+  display: inline;
+  margin-left: 0.5rem;
+}
+
+/* Input area */
+.spelling-input-area {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 400px;
+  margin: 0 auto 1rem;
+}
+
+.spelling-input-area input {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  font-size: 16px;
+  border: 3px solid #c84c0c;
+  border-radius: 4px;
+  outline: none;
+  background: #fff8e8;
+  font-family: 'Patrick Hand', cursive;
+  transition: border-color 0.2s;
+}
+
+.spelling-input-area input:focus {
+  border-color: #e8a020;
+  box-shadow: 0 0 6px rgba(232, 160, 32, 0.5);
+}
+
+/* Feedback */
+.spelling-feedback {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.6rem;
+  border-radius: 4px;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 2px solid;
+}
+
+/* Hint button */
+.btn-hint {
+  background: #ffc850;
+  color: #804000;
+  border: 2px solid #c89800;
+  padding: 0.7rem 0.9rem;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.btn-hint:hover {
+  background: #ffe080;
+}
+
+.btn-hint:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Hint display */
+.hint-display {
+  text-align: center;
+  margin: 0.5rem auto 0;
+  max-width: 400px;
+  padding: 0.5rem;
+  background: #fff8e0;
+  border: 2px solid #ffc850;
+  border-radius: 4px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  color: #804000;
+}
+
+.spelling-feedback.correct {
+  color: #1a8c1a;
+  background: #d4ffd4;
+  border-color: #1a8c1a;
+}
+
+.spelling-feedback.wrong {
+  color: #c84c0c;
+  background: #ffe8d4;
+  border-color: #c84c0c;
+}
+
+/* Result screen */
+.spelling-result-card {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.spelling-result-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.spelling-final-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.spelling-final-stats .stat-correct {
+  color: #1a8c1a;
+}
+
+.spelling-final-stats .stat-wrong {
+  color: #c84c0c;
+}
+
+.spelling-final-stats strong {
+  font-size: 1.5rem;
+}
+
+.spelling-result-details {
+  text-align: left;
+  max-width: 300px;
+  margin: 0 auto 1.5rem;
+}
+
+.result-row {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+  border: 2px solid;
+}
+
+.result-row.correct {
+  background: #d4ffd4;
+  border-color: #2d8c2d;
+}
+
+.result-row.wrong {
+  background: #ffe8d4;
+  border-color: #c84c0c;
+}
+
+/* Mobile adjustments for spelling */
+@media (max-width: 600px) {
+  .spelling-input-area {
+    max-width: 100%;
+  }
+
+  .spelling-scene {
+    height: 160px;
+  }
+
+  .scene-runner {
+    transform: scale(0.7);
+    transform-origin: bottom left;
+  }
+
+  .scene-wall-item {
+    width: 28px;
+    height: 45px;
+  }
+
+  .scene-wall-item::before {
+    left: 3px;
+    width: 22px;
+    height: 35px;
+  }
+
+  .scene-wall-item::after {
+    width: 28px;
+    height: 11px;
+    bottom: 34px;
+  }
+
+  .hint-letters {
+    font-size: 1.1rem;
+  }
+}
