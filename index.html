@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Vocab" />
+  <meta name="theme-color" content="#4a90d9" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Vocab Practice App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Top Navigation -->
+    <nav id="main-nav" class="main-nav no-print">
+      <button class="nav-tab active" data-target="input-page">📝 Practice Sheet</button>
+      <button class="nav-tab" data-target="hangman-page">🎮 Hangman Game</button>
+    </nav>
+
+    <!-- Input Page -->
+    <section id="input-page" class="page">
+      <h1>📝 Vocabulary Practice Sheet</h1>
+      <p class="subtitle">Enter words below, then generate a printable handwriting sheet for your kid.</p>
+
+      <div class="input-area">
+        <label for="vocab-input">Add a word:</label>
+        <div class="input-row">
+          <input
+            type="text"
+            id="vocab-input"
+            placeholder="e.g. apple"
+            autocomplete="off"
+          />
+          <button id="add-btn" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+
+      <div id="word-list-section" class="word-list-section hidden">
+        <h2>Word List</h2>
+        <ul id="word-list"></ul>
+      </div>
+
+      <div id="history-section" class="history-section hidden">
+        <h2>📚 Word History
+          <button id="export-btn" class="btn-small btn-export">⬇ Export</button>
+          <button id="clear-history-btn" class="btn-small btn-danger">Clear UI Words</button>
+        </h2>
+        <p class="history-hint">Click a word to add it to your current list. Edit <code>words.json</code> for bulk changes.</p>
+        <ul id="history-list"></ul>
+      </div>
+
+      <div class="options">
+        <label>
+          Repeat each word
+          <select id="repeat-count">
+            <option value="1">1 time</option>
+            <option value="2">2 times</option>
+            <option value="3" selected>3 times</option>
+            <option value="4">4 times</option>
+            <option value="5">5 times</option>
+          </select>
+        </label>
+      </div>
+
+      <button id="generate-btn" class="btn btn-success hidden">Generate Practice Sheet</button>
+    </section>
+
+    <!-- Print Page -->
+    <section id="print-page" class="page hidden">
+      <div class="print-header no-print">
+        <button id="back-btn" class="btn">← Back to Editor</button>
+        <button id="print-btn" class="btn btn-primary">🖨️ Print</button>
+      </div>
+
+      <div id="sheet-content" class="sheet-content">
+        <h1 class="sheet-title">My Vocabulary Practice</h1>
+        <p class="sheet-subtitle">Name: ___________________ &nbsp; Date: ___________________</p>
+        <div id="practice-rows"></div>
+      </div>
+    </section>
+
+    <!-- Hangman Game Page -->
+    <section id="hangman-page" class="page hidden">
+      <h1>🎮 Hangman Game</h1>
+      <p class="subtitle">Guess the word from your vocabulary list!</p>
+
+      <div id="hangman-no-words" class="hangman-message hidden">
+        <p>⚠️ No words in history yet. Add some words in the <strong>Practice Sheet</strong> tab first!</p>
+      </div>
+
+      <!-- Mode selector -->
+      <div id="hangman-mode-selector" class="hangman-mode-selector hidden">
+        <div class="mode-options">
+          <button class="btn mode-btn active" data-mode="random">🎲 Random</button>
+          <button class="btn mode-btn" data-mode="choose">👆 Choose Word</button>
+        </div>
+
+        <!-- Word picker (shown in "choose" mode) -->
+        <div id="hangman-word-picker" class="hangman-word-picker hidden">
+          <p class="picker-hint">Pick a word for the player to guess:</p>
+          <ul id="hangman-pick-list" class="pick-list"></ul>
+        </div>
+
+        <button id="hangman-start-btn" class="btn btn-success">Start Game</button>
+      </div>
+
+      <div id="hangman-game" class="hidden">
+        <div class="hangman-area">
+          <svg id="hangman-svg" viewBox="0 0 200 220" class="hangman-svg">
+            <!-- Gallows -->
+            <line x1="20" y1="210" x2="180" y2="210" stroke="#333" stroke-width="3" />
+            <line x1="60" y1="210" x2="60" y2="20" stroke="#333" stroke-width="3" />
+            <line x1="60" y1="20" x2="130" y2="20" stroke="#333" stroke-width="3" />
+            <line x1="130" y1="20" x2="130" y2="40" stroke="#333" stroke-width="3" />
+            <!-- Body parts (hidden initially) -->
+            <circle id="hm-head" cx="130" cy="55" r="15" stroke="#333" stroke-width="2" fill="none" class="hm-part hidden" />
+            <line id="hm-body" x1="130" y1="70" x2="130" y2="120" stroke="#333" stroke-width="2" class="hm-part hidden" />
+            <line id="hm-left-arm" x1="130" y1="85" x2="105" y2="105" stroke="#333" stroke-width="2" class="hm-part hidden" />
+            <line id="hm-right-arm" x1="130" y1="85" x2="155" y2="105" stroke="#333" stroke-width="2" class="hm-part hidden" />
+            <line id="hm-left-leg" x1="130" y1="120" x2="110" y2="150" stroke="#333" stroke-width="2" class="hm-part hidden" />
+            <line id="hm-right-leg" x1="130" y1="120" x2="150" y2="150" stroke="#333" stroke-width="2" class="hm-part hidden" />
+          </svg>
+
+          <div class="hangman-word" id="hangman-word"></div>
+          <div class="hangman-wrong" id="hangman-wrong"></div>
+        </div>
+
+        <div class="hangman-keyboard" id="hangman-keyboard"></div>
+
+        <div id="hangman-result" class="hangman-result hidden">
+          <p id="hangman-result-text"></p>
+          <button id="hangman-next-btn" class="btn btn-primary">Next Word</button>
+        </div>
+
+        <div class="hangman-score">
+          <span>✅ Won: <strong id="hangman-wins">0</strong></span>
+          <span>❌ Lost: <strong id="hangman-losses">0</strong></span>
+          <button id="hangman-reset-score" class="btn-small">Reset Score</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+  <script src="hangman.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
