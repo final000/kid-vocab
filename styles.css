@@ -18,6 +18,10 @@ body {
   margin: 0 auto;
 }
 
+#app.full-width {
+  max-width: 1000px;
+}
+
 /* === Top Navigation === */
 .main-nav {
   display: flex;
@@ -1230,5 +1234,143 @@ h1 {
 
   .hint-letters {
     font-size: 1.1rem;
+  }
+}
+
+/* === Vocab Invaders === */
+.invaders-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+#invaders-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 3px solid #1a1a3e;
+  border-radius: 4px;
+  background: #0a0a2e;
+}
+
+#invaders-page.page {
+  max-width: none;
+  padding: 1rem;
+}
+
+.invaders-gun-area {
+  background: #1a1a3e;
+  border-radius: 0 0 8px 8px;
+  padding: 0.8rem 1rem;
+  margin: 0 auto;
+  border: 3px solid #1a1a3e;
+  border-top: none;
+}
+
+.gun-word {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.gun-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 2.2rem;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  border-bottom: 2px solid #555;
+  text-transform: uppercase;
+}
+
+.gun-letter.missing {
+  color: #ffcc00;
+  border-bottom-color: #ffcc00;
+}
+
+.gun-letter.filled {
+  color: #00ff88;
+  border-bottom-color: #00ff88;
+}
+
+.gun-input-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.gun-input-row input {
+  flex: 1;
+  max-width: 200px;
+  padding: 0.6rem 0.8rem;
+  font-size: 16px;
+  border: 2px solid #ffcc00;
+  border-radius: 4px;
+  background: #0a0a2e;
+  color: #fff;
+  font-family: 'Patrick Hand', cursive;
+  outline: none;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.gun-input-row input:focus {
+  border-color: #fff;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+}
+
+.gun-input-row input.shake {
+  animation: inputShake 0.4s ease;
+}
+
+@keyframes inputShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.btn-fire {
+  background: #e00000;
+  color: #fff;
+  border: 2px solid #ff4444;
+  font-weight: 700;
+}
+
+.btn-fire:hover {
+  background: #ff2020;
+}
+
+.invaders-final-score {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.invaders-final-score strong {
+  font-size: 1.8rem;
+  color: #ffcc00;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .gun-letter {
+    width: 1.5rem;
+    height: 1.8rem;
+    font-size: 1.1rem;
+  }
+
+  .gun-input-row input {
+    max-width: 150px;
   }
 }

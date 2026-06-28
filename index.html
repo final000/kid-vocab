@@ -21,7 +21,8 @@
     <nav id="main-nav" class="main-nav no-print">
       <button class="nav-tab active" data-target="input-page">📝 Sheet</button>
       <button class="nav-tab" data-target="hangman-page">🎮 Hangman</button>
-      <button class="nav-tab" data-target="spelling-page">🧱 Spelling Wall</button>
+      <button class="nav-tab" data-target="spelling-page">🧱 Wall</button>
+      <button class="nav-tab" data-target="invaders-page">👾 Invaders</button>
     </nav>
 
     <!-- Input Page -->
@@ -224,12 +225,67 @@
         </div>
       </div>
     </section>
+
+    <!-- Space Invaders Game Page -->
+    <section id="invaders-page" class="page hidden">
+      <h1>👾 Vocab Invaders</h1>
+      <p class="subtitle">Complete the word to fire and destroy the aliens!</p>
+
+      <div id="invaders-no-words" class="hangman-message hidden">
+        <p>⚠️ No words in history yet. Add some words in the <strong>Sheet</strong> tab first!</p>
+      </div>
+
+      <!-- Setup Screen -->
+      <div id="invaders-setup" class="hidden">
+        <div class="spelling-setup-section">
+          <label class="setup-label">Select words for the game:</label>
+          <p class="picker-hint">Click words to select/deselect.</p>
+          <ul id="invaders-word-picker" class="pick-list"></ul>
+        </div>
+        <button id="invaders-start-btn" class="btn btn-success">Start Game</button>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="invaders-game" class="hidden">
+        <div class="invaders-hud">
+          <span>Score: <strong id="invaders-score">0</strong></span>
+          <span>Lives: <strong id="invaders-lives">❤️❤️❤️</strong></span>
+        </div>
+
+        <canvas id="invaders-canvas" width="400" height="350"></canvas>
+
+        <div class="invaders-gun-area">
+          <div class="gun-word" id="invaders-gun-word"></div>
+          <div class="gun-input-row">
+            <input
+              type="text"
+              id="invaders-input"
+              placeholder="Type missing letters..."
+              autocomplete="off"
+              autocapitalize="none"
+            />
+            <button id="invaders-fire-btn" class="btn btn-fire">🔫 Fire</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Over Screen -->
+      <div id="invaders-gameover" class="hidden">
+        <div class="spelling-result-card">
+          <h2 id="invaders-result-title"></h2>
+          <p class="invaders-final-score">Score: <strong id="invaders-final-score">0</strong></p>
+          <div id="invaders-result-details" class="spelling-result-details"></div>
+          <button id="invaders-play-again-btn" class="btn btn-primary">Play Again</button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script src="words.js"></script>
   <script src="app.js"></script>
   <script src="hangman.js"></script>
   <script src="spelling-wall.js"></script>
+  <script src="invaders.js"></script>
   <script>
     // Unregister any previously installed service worker
     if ('serviceWorker' in navigator) {

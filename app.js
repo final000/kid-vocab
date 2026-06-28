@@ -82,6 +82,7 @@ const pages = {
   'print-page': printPage,
   'hangman-page': document.getElementById('hangman-page'),
   'spelling-page': document.getElementById('spelling-page'),
+  'invaders-page': document.getElementById('invaders-page'),
 };
 
 function switchTab(targetId) {
@@ -94,12 +95,19 @@ function switchTab(targetId) {
 
   mainNav.classList.toggle('hidden', targetId === 'print-page');
 
+  // Expand layout for invaders game
+  document.getElementById('app').classList.toggle('full-width', targetId === 'invaders-page');
+
   if (targetId === 'hangman-page' && typeof window.onHangmanTabOpen === 'function') {
     window.onHangmanTabOpen();
   }
 
   if (targetId === 'spelling-page' && typeof window.onSpellingTabOpen === 'function') {
     window.onSpellingTabOpen();
+  }
+
+  if (targetId === 'invaders-page' && typeof window.onInvadersTabOpen === 'function') {
+    window.onInvadersTabOpen();
   }
 }
 
