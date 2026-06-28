@@ -316,7 +316,7 @@ h1 {
 }
 
 .practice-row .trace-line {
-  font-family: 'Comic Sans MS', 'Segoe Print', cursive;
+  font-family: 'Patrick Hand', cursive;
   font-size: 1.4rem;
   color: #bbb;
   letter-spacing: 3px;
@@ -475,7 +475,7 @@ h1 {
   font-size: 1.5rem;
   font-weight: 700;
   text-transform: uppercase;
-  font-family: 'Comic Sans MS', 'Segoe Print', cursive;
+  font-family: 'Patrick Hand', cursive;
 }
 
 .hangman-word .letter-slot.revealed {
