@@ -1,5 +1,5 @@
 // Service Worker for offline support
-const CACHE_NAME = 'vocab-app-v1';
+const CACHE_NAME = 'vocab-app-v2';
 const ASSETS = [
   './',
   './index.html',

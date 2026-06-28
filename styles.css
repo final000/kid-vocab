@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   background: #f5f7fa;
   color: #333;
   min-height: 100vh;
@@ -309,8 +309,10 @@ h1 {
 }
 
 .practice-row .word-label {
+  font-family: 'Patrick Hand', cursive;
   font-size: 1.3rem;
   font-weight: 700;
+  font-style: normal;
   margin-bottom: 0.3rem;
   color: #2c3e50;
 }
@@ -318,6 +320,7 @@ h1 {
 .practice-row .trace-line {
   font-family: 'Patrick Hand', cursive;
   font-size: 1.4rem;
+  font-style: normal;
   color: #bbb;
   letter-spacing: 3px;
   border-bottom: 1px dashed #ccc;
