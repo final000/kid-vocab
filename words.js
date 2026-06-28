@@ -5,5 +5,6 @@ const FILE_WORDS = [
   "green",
   "blue",
   "purple",
-  "orange"
+  "orange",
+  "table"
 ];

@@ -151,8 +151,13 @@
   <script src="app.js"></script>
   <script src="hangman.js"></script>
   <script>
+    // Unregister any previously installed service worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        registrations.forEach(function(registration) {
+          registration.unregister();
+        });
+      });
     }
   </script>
 </body>
