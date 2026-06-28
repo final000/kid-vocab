@@ -1238,6 +1238,12 @@ h1 {
 }
 
 /* === Vocab Invaders === */
+.difficulty-options {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
 .invaders-hud {
   display: flex;
   justify-content: space-between;

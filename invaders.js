@@ -4,9 +4,16 @@
 // Config
 const INV_ROWS = 3;
 const INV_COLS = 6;
-const INV_SPEED_INITIAL = 0.3;
-const INV_DROP = 15;
+const INV_DROP_RATIO = 0.03;
 const INV_LIVES = 3;
+
+const INV_DIFFICULTY = {
+  easy:   { speedMult: 1.0, dropMult: 0.7, accel: 0.5 },
+  normal: { speedMult: 2.0, dropMult: 1.2, accel: 1.0 },
+  hard:   { speedMult: 3.5, dropMult: 1.8, accel: 2.0 },
+};
+
+let invDifficulty = 'normal';
 
 // State
 let invWords = [];
@@ -17,7 +24,7 @@ let invLives = 0;
 let invGameActive = false;
 let invAnimFrame = null;
 let invDirection = 1; // 1 = right, -1 = left
-let invSpeed = INV_SPEED_INITIAL;
+let invSpeed = 0.3;
 let invCurrentWord = '';
 let invMissingIndices = [];
 let invBullet = null; // { x, y }
@@ -92,7 +99,8 @@ function startInvadersGame() {
   invScore = 0;
   invLives = INV_LIVES;
   invDirection = 1;
-  invSpeed = INV_SPEED_INITIAL;
+  const diff = INV_DIFFICULTY[invDifficulty];
+  invSpeed = invCanvas.width * 0.0004 * diff.speedMult;
   invBullet = null;
   invGameActive = true;
   invWordsUsed = [];
@@ -107,6 +115,7 @@ function startInvadersGame() {
   createAliens();
   loadNewWord();
   updateHUD();
+  invInput.focus();
   gameLoop();
 }
 
@@ -117,9 +126,9 @@ function resizeCanvas() {
   invCanvas.height = Math.min(Math.floor(w * 0.55), 400);
 }
 
-// Resize on window change
+// Only resize before game starts, not during
 window.addEventListener('resize', () => {
-  if (invGameActive) {
+  if (!invGameActive) {
     resizeCanvas();
   }
 });
@@ -164,6 +173,7 @@ function loadNewWord() {
   invMissingIndices = indices.slice(0, removeCount).sort((a, b) => a - b);
 
   renderGunWord();
+  // Don't re-focus here — let the caller handle it to avoid iOS keyboard flicker
 }
 
 function renderGunWord() {
@@ -205,19 +215,26 @@ function checkAnswer() {
     invScore += 10;
     fireBullet();
     invInput.value = '';
+    renderGunWord();
     invWordsUsed.push({ word: invCurrentWord, correct: true });
     // Load next word after short delay
     setTimeout(() => {
-      if (invGameActive) loadNewWord();
+      if (invGameActive) {
+        loadNewWord();
+        invInput.focus();
+      }
     }, 600);
   } else {
     // Wrong
     invWrongCount++;
     invInput.value = '';
+    renderGunWord();
     invInput.classList.add('shake');
     setTimeout(() => invInput.classList.remove('shake'), 400);
   }
 
+  // Always keep focus on input (prevents iOS keyboard dismiss)
+  invInput.focus();
   updateHUD();
 }
 
@@ -265,10 +282,11 @@ function update() {
 
   if (hitEdge) {
     invDirection *= -1;
+    const diff = INV_DIFFICULTY[invDifficulty];
     invAliens.forEach((alien) => {
-      if (alien.alive) alien.y += INV_DROP;
+      if (alien.alive) alien.y += invCanvas.height * INV_DROP_RATIO * diff.dropMult;
     });
-    invSpeed += 0.05;
+    invSpeed += invCanvas.width * 0.00005 * diff.accel;
   }
 
   // Check if aliens reached bottom
@@ -285,7 +303,8 @@ function update() {
 
   // Check if all aliens dead → spawn new wave
   if (invAliens.every((a) => !a.alive)) {
-    invSpeed += 0.1;
+    const diff = INV_DIFFICULTY[invDifficulty];
+    invSpeed += invCanvas.width * 0.0001 * diff.accel;
     createAliens();
   }
 
@@ -409,7 +428,23 @@ invWordPicker.addEventListener('click', (e) => {
 });
 
 invStartBtn.addEventListener('click', startInvadersGame);
-invFireBtn.addEventListener('click', checkAnswer);
+
+// Difficulty buttons
+const diffBtns = document.querySelectorAll('#invaders-setup .difficulty-options .mode-btn');
+diffBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    diffBtns.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    invDifficulty = btn.dataset.speed;
+  });
+});
+invFireBtn.addEventListener('mousedown', (e) => {
+  e.preventDefault(); // prevent focus steal from input
+});
+invFireBtn.addEventListener('click', () => {
+  checkAnswer();
+  invInput.focus();
+});
 
 invInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
